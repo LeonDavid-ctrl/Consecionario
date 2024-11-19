@@ -10,7 +10,7 @@
 
 /* Esto es el estilo de fuente (no me dio) */
 body {
-    background-color: #1f1f1f;
+    background-color:#1f1f1f;
 }
 
 .container {
@@ -19,13 +19,17 @@ body {
 }
 
 .header {
-    background-image: url(IMG/Header.jpeg);
+    min-height: 10vh;
+    display: flex;
+    align-items: center;
+}
+
+.Principal {
+    padding-top: 20px;
+    background-image: url(./img/ImgHome/Header.jpeg);
     background-position: center top;
     background-repeat: no-repeat;
     background-size: cover;
-    min-height: 70vh;
-    display: flex;
-    align-items: center;
 }
 
 .menu {
@@ -136,7 +140,7 @@ body {
 }
 
 .Welcome-1 {
-    background-image: url(IMG/Second.jpg);
+    background-image: url(./img/ImgHome/Second.jpg);
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -250,7 +254,7 @@ tr {
 }
 
 .Prices-2 {
-    background-image: url(IMG/pRices.jpg);
+    background-image: url(./img/ImgHome/pRices.jpg);
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -299,8 +303,8 @@ tr {
     color: rgb(200, 0, 255);
 }
 
-.footer-bg {
-    background-image: url(IMG/Footer.jpeg);
+.Contacto-bg {
+    background-image: url(./img/ImgHome/Footer.jpeg);
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -477,18 +481,6 @@ textarea {
 
 }
 /* Esto es el estilo de fuente (no me dio) */
-body {
-    background-color: #1f1f1f;
-}
-
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.header {
-    background-image: url(IMG/Header.jpeg);
-}
 
 
 

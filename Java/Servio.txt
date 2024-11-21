@@ -1,4 +1,4 @@
-package com.mycompany.servicios;
+package com.mycompany.consecionariodojjs;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -49,5 +49,9 @@ public class Servicios {
             }
             else System.out.println("No se encontro el producto");
         }
+    }
+    
+    public boolean VerificarServicio(){
+        return idServicio.isEmpty();
     }
 }

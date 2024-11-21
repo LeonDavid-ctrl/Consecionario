@@ -24,6 +24,8 @@ public class Productos {
                 System.out.println("Se elimino el producto "+nameProducto.get(i));
                 idProducto.remove(i);
                 nameProducto.remove(i);
+                precioProducto.remove(i);
+                stockProducto.remove(i);
             }
             else System.out.println("No se encontro el producto");
         }

@@ -11,11 +11,11 @@ public class Productos {
     List<Integer> precioProducto = new ArrayList<>();
     int ultimoId = 0;
     
-    public void AñadirProductos(String n, int s,int p){
+    public void AñadirProductos(String n,int p){
         nameProducto.add(n);
         idProducto.add(++ultimoId);
-        stockProducto.add(s);
         precioProducto.add(p);
+        AñadirStock(idProducto.get(ultimoId),0);
     }
     
     public void QuitarProductos(int id){

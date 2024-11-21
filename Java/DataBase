@@ -42,3 +42,71 @@ CREATE TABLE Servicios (
     Costo INT ,
     FOREIGN KEY (ID_Carro) REFERENCES Carros(ID_Carro)
 );
+
+--Funcion de clientes 
+CREATE PROCEDURE sp_Consecionario_Cliente
+@id_Cliente int,
+@nombre VARCHAR(100),
+@telefono VARCHAR(15),
+@correo VARCHAR(100)
+
+AS
+BEGIN
+
+	INSERT INTO Clientes(ID_Cliente,Nombre,Telefono,Correo)
+	VALUES (@Id_Cliente,@Nombre,@Telefono,@Correo)	
+END
+-- Funciones de Carros
+CREATE PROCEDURE sp_Consecionario_Carros
+@id_Carro INT,
+@marca VARCHAR(50),
+@modelo VARCHAR(50),
+@año INT,
+@precio INT
+
+AS
+BEGIN
+
+	INSERT INTO Carros(ID_Carro,Marca,Modelo,Año,Precio)
+	VALUES (@Id_Carro,@Marca,@Modelo,@Año,@Precio)	
+END
+
+
+--Funciones de Empleados
+CREATE PROCEDURE sp_Consecionario_Empleados
+@id_Empleados INT,
+@nombre VARCHAR(100),
+@cargo VARCHAR(100),
+@telefono VARCHAR
+
+AS
+BEGIN
+
+	INSERT INTO Empleado(ID_Empleados,Nombre,Cargo,Telefono)
+	VALUES (@id_Empleados,@Nombre,@Cargo,@Telefono)	
+END
+
+--Funcion de ventas
+CREATE PROCEDURE sp_Consecionario_Ventas
+@id_Ventas int,
+@fecha DATE
+
+AS
+BEGIN
+
+	INSERT INTO Venta(ID_Venta,Fecha)
+	VALUES (@Id_Ventas,@Fecha)	
+END
+
+--Funcion de Servicios
+CREATE PROCEDURE sp_Consecionario_Servicios
+@id_Servicios int,
+@fecha DATE,
+@descripcion VARCHAR(50),
+@costo INT
+AS
+BEGIN
+
+	INSERT INTO Servicios(ID_Servicio,Fecha,Descripcion,Costo)
+	VALUES (@id_Servicios,@Fecha,@Descripcion,@Costo)	
+END

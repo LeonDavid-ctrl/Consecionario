@@ -1,0 +1,46 @@
+CREATE DATABASE Concesionario;
+USE Concesionario;
+
+CREATE TABLE Clientes (
+    ID_Cliente INT PRIMARY KEY,
+    Nombre VARCHAR(100) NOT NULL,
+    Telefono VARCHAR(15),
+    Correo VARCHAR(100)
+);
+
+CREATE TABLE Carros (
+    ID_Carro INT PRIMARY KEY,
+    Marca VARCHAR(50) NOT NULL,
+    Modelo VARCHAR(50) NOT NULL,
+    Año INT NOT NULL,
+    Precio INT NOT NULL,
+    ID_Proveedor INT,
+    FOREIGN KEY (ID_Proveedor) REFERENCES Proveedores(ID_Proveedor)
+);
+
+CREATE TABLE Empleados (
+    ID_Empleado INT PRIMARY KEY,
+    Nombre VARCHAR(100) NOT NULL,
+    Cargo VARCHAR(50),
+    Telefono VARCHAR(15)
+);
+
+CREATE TABLE Ventas (
+    ID_Venta INT PRIMARY KEY,
+    Fecha DATE NOT NULL,
+    ID_Carro INT NOT NULL,
+    ID_Cliente INT NOT NULL,
+    ID_Empleado INT NOT NULL,
+    FOREIGN KEY (ID_Carro) REFERENCES Carros(ID_Carro),
+    FOREIGN KEY (ID_Cliente) REFERENCES Clientes(ID_Cliente),
+    FOREIGN KEY (ID_Empleado) REFERENCES Empleados(ID_Empleado)
+);
+
+CREATE TABLE Servicios (
+    ID_Servicio INT PRIMARY KEY,
+    ID_Carro INT NOT NULL,
+    Fecha DATE NOT NULL,
+    Descripcion VARCHAR(50),
+    Costo INT ,
+    FOREIGN KEY (ID_Carro) REFERENCES Carros(ID_Carro)
+);

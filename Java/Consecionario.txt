@@ -5,7 +5,7 @@ import java.util.Scanner;
 public class ConsecionarioDojjs {
     
     String n,p;
-    int s,id,op,w=0;
+    int s,id,op,w=0,pri;
     admin admi;
     Clientes clientes;
     Productos producto;
@@ -75,26 +75,44 @@ public class ConsecionarioDojjs {
     
     public void OpAdmin(){
         do{
-        System.out.println("Opciones de Administrador \n1) Agregar productos\n2) Quitar productos\n3) Ver ventas\n4) Salir");
+        System.out.println("Opciones de Administrador \n1) Agregar productos\n2) Quitar productos\n3) Ver ventas\n4) Añadir un servicio\n5) Quitar un servicio\n6) Salir");
         op = in.nextInt();
         switch(op){
             case 1: in.nextLine();
                 System.out.println("Ingrese el nombre del producto que quiere añadir");
                 n = in.nextLine();
+                System.out.println("Ingrese el precio del producto");
+                pri = in.nextInt();
+                producto.AñadirProductos(n,pri);
+                System.out.println("Ingrese la cantidad que quiere añadir");
+                s = in.nextInt();
+                producto.AñadirCantidad(s);
             break;
             case 2: System.out.println("Ingrese el ID del producto que quiere quitar");
                 producto.MostrarProductos();
                 id = in.nextInt();
                 producto.QuitarProductos(id);
             break;
+            case 4: in.nextLine();
+                System.out.println("Ingrese el nombre del servicio que quiere añadir");
+                n = in.nextLine();
+                System.out.println("Ingrese el precio del servicio");
+                pri = in.nextInt();
+                producto.AñadirProductos(n,pri);
+            break;
+            case 5: System.out.println("Ingrese el ID del servicio que quiere quitar");
+                producto.MostrarProductos();
+                id = in.nextInt();
+                producto.QuitarProductos(id);
+            break;
             case 3: venta.ConsultarVentas();
             break;
-            case 4: System.out.println("Saliendo");
+            case 6: System.out.println("Saliendo");
             break;
             default: System.out.println("Opcion Invalida");
             break;
         }
-        }while(op!=4);
+        }while(op!=6);
     }
     
     public void OpCliente(){

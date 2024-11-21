@@ -1,0 +1,75 @@
+package com.mycompany.consecionariodojjs;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Productos {
+    
+    List<String> nameProducto = new ArrayList<>();
+    List<Integer> idProducto = new ArrayList<>();
+    List<Integer> stockProducto = new ArrayList<>();
+    List<Integer> precioProducto = new ArrayList<>();
+    int ultimoId = 0;
+    
+    public void AñadirProductos(String n, int s,int p){
+        nameProducto.add(n);
+        idProducto.add(++ultimoId);
+        stockProducto.add(s);
+        precioProducto.add(p);
+    }
+    
+    public void QuitarProductos(int id){
+        for (int i = 0; i < idProducto.size(); i++) {
+            if(id == idProducto.get(i)){
+                System.out.println("Se elimino el producto "+nameProducto.get(i));
+                idProducto.remove(i);
+                nameProducto.remove(i);
+            }
+            else System.out.println("No se encontro el producto");
+        }
+    }
+    
+    public void AñadirStock(int id,int cant){
+        for (int i = 0; i < idProducto.size(); i++) {
+            if(id == idProducto.get(i)){
+                stockProducto.set(i, stockProducto.get(i) + cant);
+                return;
+            } 
+        }
+    }
+    
+    
+    public void MostrarProductos() {
+        System.out.println("Inventario de productos:");
+        for (int i = 0; i < idProducto.size(); i++) {
+            System.out.println("ID: " + idProducto.get(i) + ", Nombre: " + nameProducto.get(i)+" $"+precioProducto.get(i));
+            VerCantidad(i);
+        }
+    }
+    
+    public boolean VerificarProductos(){
+        return idProducto.isEmpty();
+    }
+    
+    public void VerCantidad(int id){
+                System.out.println(stockProducto.get(id)+" unidades");
+    }
+
+    
+    public int Comprar(int id, int cant){
+        for (int i = 0; i < idProducto.size(); i++) {
+            if(id == idProducto.get(i)){
+                if(cant <= stockProducto.get(i)){
+                    System.out.println("Compra realizada");
+                     stockProducto.set(i, stockProducto.get(i) - cant);
+                     return precioProducto.get(id);
+                } else {
+                System.out.println("Stock insuficiente");
+                return 0;
+                }
+            }
+        }
+        System.out.println("No se encontro el producto");
+        return 0;
+    }
+}

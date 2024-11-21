@@ -1,0 +1,31 @@
+package com.mycompany.consecionariodojjs;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Ventas {
+    
+    List<Integer> idVenta = new ArrayList<>();
+    List<Integer> idProVenta = new ArrayList<>();
+    List<String> nameVenta = new ArrayList<>();
+    List<Integer> precioVenta = new ArrayList<>();
+    List<Integer> cantVenta = new ArrayList<>();
+    int totalVentas = 0,ultimoId=0;
+    
+    public void AgregarVenta(int id,String name,int precio,int cant){
+        idProVenta.add(id);
+        nameVenta.add(name);
+        precioVenta.add(precio);
+        cantVenta.add(cant);
+        idVenta.add(++ultimoId);
+        totalVentas = precio;
+    }
+    
+    public void ConsultarVentas(){
+        System.out.println("Historial de ventas");
+        for (int i = 0; i < idVenta.size(); i++) {
+            System.out.println("ID: "+idVenta.get(i)+"ID Producto: " + idProVenta.get(i) + ", Nombre: " + nameVenta.get(i)+" Cantidad "+cantVenta.get(i)+" $"+(precioVenta.get(i)*cantVenta.get(i)));
+        }
+        System.out.println("Total recaudado $"+totalVentas);
+    }
+}

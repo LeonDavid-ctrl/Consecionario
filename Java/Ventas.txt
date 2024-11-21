@@ -20,6 +20,15 @@ public class Ventas {
         idVenta.add(++ultimoId);
         totalVentas = precio;
     }
+
+    public void AgregarVentaServicio(int id,String name,int precio){
+        idProVenta.add(id);
+        nameVenta.add(name);
+        precioVenta.add(precio);
+        cantVenta.add(1);
+        idVenta.add(++ultimoId);
+        totalVentas = precio;
+    }
     
     public void ConsultarVentas(){
         System.out.println("Historial de ventas");

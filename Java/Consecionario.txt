@@ -10,6 +10,7 @@ public class ConsecionarioDojjs {
     Clientes clientes;
     Productos producto;
     Ventas venta;
+    Servicios serv;
     Scanner in = new Scanner(System.in);
 
     public void main(String[] args) {
@@ -75,7 +76,7 @@ public class ConsecionarioDojjs {
     
     public void OpAdmin(){
         do{
-        System.out.println("Opciones de Administrador \n1) Agregar productos\n2) Quitar productos\n3) Ver ventas\n4) Añadir un servicio\n5) Quitar un servicio\n6) Salir");
+        System.out.println("Opciones de Administrador \n1) Agregar productos\n2) Quitar productos\n3) Ver ventas\n4) Añadir un servicio\n5) Quitar un servicio\n6) Añadir stock\n7) Salir");
         op = in.nextInt();
         switch(op){
             case 1: in.nextLine();
@@ -83,59 +84,86 @@ public class ConsecionarioDojjs {
                 n = in.nextLine();
                 System.out.println("Ingrese el precio del producto");
                 pri = in.nextInt();
-                producto.AñadirProductos(n,pri);
-                System.out.println("Ingrese la cantidad que quiere añadir");
+                System.out.println("Ingrese la cantidad que va a agregar");
                 s = in.nextInt();
-                producto.AñadirCantidad(s);
+                producto.AñadirProductos(n, pri);
+                producto.AñadirStock(id, s);
             break;
             case 2: System.out.println("Ingrese el ID del producto que quiere quitar");
                 producto.MostrarProductos();
                 id = in.nextInt();
                 producto.QuitarProductos(id);
             break;
+            case 3: venta.ConsultarVentas();
+            break;
             case 4: in.nextLine();
                 System.out.println("Ingrese el nombre del servicio que quiere añadir");
                 n = in.nextLine();
                 System.out.println("Ingrese el precio del servicio");
                 pri = in.nextInt();
-                producto.AñadirProductos(n,pri);
+                System.out.println("Ingrese la descripcion del servicio");
+                p = in.nextLine();
+                serv.AñadirServicio(n, pri, p);
             break;
             case 5: System.out.println("Ingrese el ID del servicio que quiere quitar");
+                serv.MostrarServicio();
+                id = in.nextInt();
+                serv.QuitarServicio(id);
+            break;
+            case 6: System.out.println("Ingrese el ID del producto");
                 producto.MostrarProductos();
                 id = in.nextInt();
-                producto.QuitarProductos(id);
+                System.out.println("Ingrese la cantidad que quiere agregar");
+                s = in.nextInt();
+                producto.AñadirStock(id, s);
             break;
-            case 3: venta.ConsultarVentas();
-            break;
-            case 6: System.out.println("Saliendo");
+            case 7: System.out.println("Saliendo");
             break;
             default: System.out.println("Opcion Invalida");
             break;
         }
-        }while(op!=6);
+        }while(op!=7);
     }
     
     public void OpCliente(){
         do{
-        System.out.println("Opciones de Administrador \n1) Comprar Productos\n2) Ver los Productos\n3) Salir");
+        System.out.println("Opciones de Administrador \n1) Comprar Productos\n2) Ver los Productos\n1) Comprar Servicios\n2) Ver los Servicios\n5) Salir");
         op = in.nextInt();
         switch(op){
             case 1: System.out.println("Seleccione el ID del producto que quiere comprar");
-                producto.VerificarProductos();
-                id = in.nextInt();
-                producto.VerCantidad(id);
-                System.out.println("¿Cuantas unidades quiere comprar?");
-                s = in.nextInt();
-                producto.Comprar(id, s);
-                venta.AgregarVenta(id, producto.nameProducto.get(id), producto.precioProducto.get(id),s);
+                if(producto.VerificarProductos()){
+                    producto.MostrarProductos();
+                    id = in.nextInt();
+                    producto.VerCantidad(id);
+                    System.out.println("¿Cuantas unidades quiere comprar?");
+                    s = in.nextInt();
+                    producto.Comprar(id, s);
+                    venta.AgregarVenta(id, producto.nameProducto.get(id), producto.precioProducto.get(id),s);
+                }
+                else System.out.println("Aun no hay productos");
             break;
-            case 2: producto.VerificarProductos();
+            case 2: if(producto.VerificarProductos()){
+                producto.MostrarProductos();
+            }
             break;
-            case 3: System.out.println("Saliendo");
+            case 3: System.out.println("Seleccione el ID del servicio que quiere comprar");
+                if(serv.VerificarServicio()){
+                    serv.MostrarServicio();
+                    id = in.nextInt();
+                    serv.ComprarServicio(id);
+                    venta.AgregarVentaServicio(id, serv.nameServicio.get(id), serv.priceServicio.get(id) );
+                }
+                else System.out.println("Aun no hay productos");
+            break;
+            case 4: if(serv.VerificarServicio()){
+                serv.MostrarServicio();
+            }
+            break;
+            case 5: System.out.println("Saliendo");
             break;
             default: System.out.println("Opcion Invalida");
             break;
         }
-        }while(op!=3);
+        }while(op!=5);
     }
 }

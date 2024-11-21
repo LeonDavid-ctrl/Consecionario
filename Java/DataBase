@@ -14,8 +14,6 @@ CREATE TABLE Carros (
     Modelo VARCHAR(50) NOT NULL,
     Año INT NOT NULL,
     Precio INT NOT NULL,
-    ID_Proveedor INT,
-    FOREIGN KEY (ID_Proveedor) REFERENCES Proveedores(ID_Proveedor)
 );
 
 CREATE TABLE Empleados (

@@ -1,0 +1,53 @@
+package com.mycompany.servicios;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+public class Servicios {
+
+    List<String> nameServicio = new ArrayList<>();
+    List<Integer> idServicio = new ArrayList<>();
+    List<String> descServicio = new ArrayList<>();
+    List<Date> dateServicio = new ArrayList<>();
+    List<Integer> priceServicio = new ArrayList<>();
+    int ultimoId = 0;
+    
+    public void MostrarServicio(){
+        System.out.println("------Servicios------");
+        for(int i = 0; i<idServicio.size();i++){
+            System.out.println("ID: "+idServicio.get(i)+" "+nameServicio.get(i)+" "+descServicio.get(i));
+        }
+    }
+    
+    public int ComprarServicio(int id){
+        for (int i = 0; i < idServicio.size(); i++) {
+            if(id == idServicio.get(i)){
+                System.out.println("Compra realizada");
+                return priceServicio.get(id);
+            }
+        }
+        System.out.println("No se encontro el producto");
+        return 0;
+    }
+    
+    public void AñadirServicio(String n,int p,String d){
+        nameServicio.add(n);
+        idServicio.add(++ultimoId);
+        priceServicio.add(p);
+        descServicio.add(d);
+    }
+    
+    public void QuitarServicio(int id){
+        for (int i = 0; i < idServicio.size(); i++) {
+            if(id == idServicio.get(i)){
+                System.out.println("Se elimino el producto "+nameServicio.get(i));
+                idServicio.remove(i);
+                nameServicio.remove(i);
+                descServicio.remove(i);
+                priceServicio.remove(i);
+            }
+            else System.out.println("No se encontro el producto");
+        }
+    }
+}

@@ -11,11 +11,12 @@ public class Productos {
     List<Integer> precioProducto = new ArrayList<>();
     int ultimoId = 0;
     
-    public void AñadirProductos(String n,int p){
+    public void AñadirProductos(String n,int p,int c){
         nameProducto.add(n);
         idProducto.add(++ultimoId);
         precioProducto.add(p);
-        AñadirStock(idProducto.get(ultimoId),0);
+        stockProducto.add(c);
+        System.out.println("Se añadio el producto "+nameProducto.get(ultimoId-1));
     }
     
     public void QuitarProductos(int id){
@@ -27,13 +28,13 @@ public class Productos {
                 precioProducto.remove(i);
                 stockProducto.remove(i);
             }
-            else System.out.println("No se encontro el producto");
         }
+        System.out.println("No se encontro el producto");
     }
     
     public void AñadirStock(int id,int cant){
         for (int i = 0; i < idProducto.size(); i++) {
-            if(id == idProducto.get(i)){
+            if(idProducto.get(i) == id){
                 stockProducto.set(i, stockProducto.get(i) + cant);
                 return;
             } 
@@ -45,7 +46,7 @@ public class Productos {
         System.out.println("Inventario de productos:");
         for (int i = 0; i < idProducto.size(); i++) {
             System.out.println("ID: " + idProducto.get(i) + ", Nombre: " + nameProducto.get(i)+" $"+precioProducto.get(i));
-            VerCantidad(i);
+            VerCantidad(i+1);
         }
     }
     
@@ -54,7 +55,7 @@ public class Productos {
     }
     
     public void VerCantidad(int id){
-                System.out.println(stockProducto.get(id)+" unidades");
+        System.out.println(stockProducto.get(id-1)+" unidades");
     }
 
     

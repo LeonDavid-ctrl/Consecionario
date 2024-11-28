@@ -1,112 +1,239 @@
+USE Concesionario;
+
 CREATE DATABASE Concesionario;
 USE Concesionario;
 
+-- Tabla de Clientes
 CREATE TABLE Clientes (
-    ID_Cliente INT PRIMARY KEY,
+    ClienteID INT AUTO_INCREMENT PRIMARY KEY,
     Nombre VARCHAR(100) NOT NULL,
     Telefono VARCHAR(15),
     Correo VARCHAR(100)
 );
 
-CREATE TABLE Carros (
-    ID_Carro INT PRIMARY KEY,
+-- Tabla de Autos
+CREATE TABLE Autos (
+    AutoID INT AUTO_INCREMENT PRIMARY KEY,
     Marca VARCHAR(50) NOT NULL,
     Modelo VARCHAR(50) NOT NULL,
     Año INT NOT NULL,
-    Precio INT NOT NULL,
+    Precio DECIMAL(10,2) NOT NULL
 );
 
+-- Tabla de Productos para autos
+CREATE TABLE Productos (
+    ProductoID INT AUTO_INCREMENT PRIMARY KEY,
+    Nombre VARCHAR(100) NOT NULL,
+    Descripcion VARCHAR(255),
+    Precio DECIMAL(10,2) NOT NULL,
+    Stock INT NOT NULL
+);
+
+-- Tabla de Servicios
+CREATE TABLE Servicios (
+    ServicioID INT AUTO_INCREMENT PRIMARY KEY,
+    Nombre VARCHAR(100) NOT NULL,
+    Descripcion VARCHAR(255),
+    Costo DECIMAL(10,2) NOT NULL,
+    DuracionEstimada INT NOT NULL -- en minutos
+);
+
+-- Tabla de Empleados
 CREATE TABLE Empleados (
-    ID_Empleado INT PRIMARY KEY,
+    EmpleadoID INT AUTO_INCREMENT PRIMARY KEY,
     Nombre VARCHAR(100) NOT NULL,
     Cargo VARCHAR(50),
     Telefono VARCHAR(15)
 );
 
+-- Tabla General de Ventas
 CREATE TABLE Ventas (
-    ID_Venta INT PRIMARY KEY,
+    VentaID INT AUTO_INCREMENT PRIMARY KEY,
     Fecha DATE NOT NULL,
-    ID_Carro INT NOT NULL,
-    ID_Cliente INT NOT NULL,
-    ID_Empleado INT NOT NULL,
-    FOREIGN KEY (ID_Carro) REFERENCES Carros(ID_Carro),
-    FOREIGN KEY (ID_Cliente) REFERENCES Clientes(ID_Cliente),
-    FOREIGN KEY (ID_Empleado) REFERENCES Empleados(ID_Empleado)
+    ClienteID INT NOT NULL,
+    EmpleadoID INT NOT NULL,
+    Total DECIMAL(10,2) NOT NULL,
+    FOREIGN KEY (ClienteID) REFERENCES Clientes(ClienteID) ON DELETE CASCADE,
+    FOREIGN KEY (EmpleadoID) REFERENCES Empleados(EmpleadoID) ON DELETE CASCADE
 );
 
-CREATE TABLE Servicios (
-    ID_Servicio INT PRIMARY KEY,
-    ID_Carro INT NOT NULL,
-    Fecha DATE NOT NULL,
-    Descripcion VARCHAR(50),
-    Costo INT ,
-    FOREIGN KEY (ID_Carro) REFERENCES Carros(ID_Carro)
+-- Tabla de Detalles de Ventas de Autos
+CREATE TABLE VentaAutos (
+    VentaAutoID INT AUTO_INCREMENT PRIMARY KEY,
+    VentaID INT NOT NULL,
+    AutoID INT NOT NULL,
+    PrecioVenta DECIMAL(10,2) NOT NULL,
+    FOREIGN KEY (VentaID) REFERENCES Ventas(VentaID) ON DELETE CASCADE,
+    FOREIGN KEY (AutoID) REFERENCES Autos(AutoID) ON DELETE CASCADE
+);
+
+-- Tabla de Detalles de Ventas de Productos
+CREATE TABLE VentaProductos (
+    VentaProductoID INT AUTO_INCREMENT PRIMARY KEY,
+    VentaID INT NOT NULL,
+    ProductoID INT NOT NULL,
+    Cantidad INT NOT NULL,
+    PrecioUnitario DECIMAL(10,2) NOT NULL,
+    FOREIGN KEY (VentaID) REFERENCES Ventas(VentaID) ON DELETE CASCADE,
+    FOREIGN KEY (ProductoID) REFERENCES Productos(ProductoID) ON DELETE CASCADE
+);
+
+-- Tabla de Detalles de Ventas de Servicios
+CREATE TABLE VentaServicios (
+    VentaServicioID INT AUTO_INCREMENT PRIMARY KEY,
+    VentaID INT NOT NULL,
+    ServicioID INT NOT NULL,
+    Costo DECIMAL(10,2) NOT NULL,
+    FOREIGN KEY (VentaID) REFERENCES Ventas(VentaID) ON DELETE CASCADE,
+    FOREIGN KEY (ServicioID) REFERENCES Servicios(ServicioID) ON DELETE CASCADE
 );
 
 --Funcion de clientes 
-CREATE PROCEDURE sp_Consecionario_Cliente
-@id_Cliente int,
-@nombre VARCHAR(100),
-@telefono VARCHAR(15),
-@correo VARCHAR(100)
+-- Procedimiento para insertar Clientes
+CREATE PROCEDURE sp_InsertarCliente
+    @Nombre VARCHAR(100),
+    @Telefono VARCHAR(15),
+    @Correo VARCHAR(100)
+AS
+BEGIN
+    INSERT INTO Clientes (Nombre, Telefono, Correo)
+    VALUES (@Nombre, @Telefono, @Correo);
+END;
 
+-- Procedimiento para insertar Autos
+CREATE PROCEDURE sp_InsertarAuto
+    @Marca VARCHAR(50),
+    @Modelo VARCHAR(50),
+    @Año INT,
+    @Precio DECIMAL(10,2)
+AS
+BEGIN
+    INSERT INTO Autos (Marca, Modelo, Año, Precio)
+    VALUES (@Marca, @Modelo, @Año, @Precio);
+END;
+
+-- Procedimiento para insertar Productos
+CREATE PROCEDURE sp_InsertarProducto
+    @Nombre VARCHAR(100),
+    @Descripcion VARCHAR(255),
+    @Precio DECIMAL(10,2),
+    @Stock INT
+AS
+BEGIN
+    INSERT INTO Productos (Nombre, Descripcion, Precio, Stock)
+    VALUES (@Nombre, @Descripcion, @Precio, @Stock);
+END;
+
+-- Procedimiento para insertar Servicios
+CREATE PROCEDURE sp_InsertarServicio
+    @Nombre VARCHAR(100),
+    @Descripcion VARCHAR(255),
+    @Costo DECIMAL(10,2),
+    @DuracionEstimada INT
+AS
+BEGIN
+    INSERT INTO Servicios (Nombre, Descripcion, Costo, DuracionEstimada)
+    VALUES (@Nombre, @Descripcion, @Costo, @DuracionEstimada);
+END;
+
+-- Procedimiento para insertar Empleados
+CREATE PROCEDURE sp_InsertarEmpleado
+    @Nombre VARCHAR(100),
+    @Cargo VARCHAR(50),
+    @Telefono VARCHAR(15)
+AS
+BEGIN
+    INSERT INTO Empleados (Nombre, Cargo, Telefono)
+    VALUES (@Nombre, @Cargo, @Telefono);
+END;
+
+-- Procedimiento para insertar Ventas
+CREATE PROCEDURE sp_InsertarVenta
+    @ClienteID INT,
+    @EmpleadoID INT,
+    @Fecha DATE,
+    @Total DECIMAL(10,2)
+AS
+BEGIN
+    INSERT INTO Ventas (ClienteID, EmpleadoID, Fecha, Total)
+    VALUES (@ClienteID, @EmpleadoID, @Fecha, @Total);
+END;
+
+-- Procedimiento para insertar detalles de venta de autos
+CREATE PROCEDURE sp_InsertarVentaAuto
+    @VentaID INT,
+    @AutoID INT,
+    @PrecioVenta DECIMAL(10,2)
+AS
+BEGIN
+    INSERT INTO VentaAutos (VentaID, AutoID, PrecioVenta)
+    VALUES (@VentaID, @AutoID, @PrecioVenta);
+END;
+
+-- Procedimiento para insertar detalles de venta de productos
+CREATE PROCEDURE sp_InsertarVentaProducto
+    @VentaID INT,
+    @ProductoID INT,
+    @Cantidad INT,
+    @PrecioUnitario DECIMAL(10,2)
+AS
+BEGIN
+    INSERT INTO VentaProductos (VentaID, ProductoID, Cantidad, PrecioUnitario)
+    VALUES (@VentaID, @ProductoID, @Cantidad, @PrecioUnitario);
+END;
+
+-- Procedimiento para insertar detalles de venta de servicios
+CREATE PROCEDURE sp_InsertarVentaServicio
+    @VentaID INT,
+    @ServicioID INT,
+    @Costo DECIMAL(10,2)
+AS
+BEGIN
+    INSERT INTO VentaServicios (VentaID, ServicioID, Costo)
+    VALUES (@VentaID, @ServicioID, @Costo);
+END;
+
+-- Eliminar un Cliente
+CREATE PROCEDURE sp_EliminarCliente
+    @ClienteID INT
+AS
+BEGIN
+    DELETE FROM Clientes WHERE ID_Cliente = @ClienteID;
+END;
+
+-- Eliminar un Auto
+CREATE PROCEDURE sp_EliminarAuto
+    @AutoID INT
 AS
 BEGIN
 
-	INSERT INTO Clientes(ID_Cliente,Nombre,Telefono,Correo)
-	VALUES (@Id_Cliente,@Nombre,@Telefono,@Correo)	
-END
--- Funciones de Carros
-CREATE PROCEDURE sp_Consecionario_Carros
-@id_Carro INT,
-@marca VARCHAR(50),
-@modelo VARCHAR(50),
-@año INT,
-@precio INT
+    DELETE FROM Autos WHERE ID_Auto = @AutoID;
+END;
 
+-- Eliminar un Producto
+CREATE PROCEDURE sp_EliminarProducto
+    @ProductoID INT
 AS
 BEGIN
 
-	INSERT INTO Carros(ID_Carro,Marca,Modelo,Año,Precio)
-	VALUES (@Id_Carro,@Marca,@Modelo,@Año,@Precio)	
-END
+    DELETE FROM Productos WHERE ID_Producto = @ProductoID;
+END;
 
-
---Funciones de Empleados
-CREATE PROCEDURE sp_Consecionario_Empleados
-@id_Empleados INT,
-@nombre VARCHAR(100),
-@cargo VARCHAR(100),
-@telefono VARCHAR
-
+-- Eliminar un Servicio
+CREATE PROCEDURE sp_EliminarServicio
+    @ServicioID INT
 AS
 BEGIN
 
-	INSERT INTO Empleado(ID_Empleados,Nombre,Cargo,Telefono)
-	VALUES (@id_Empleados,@Nombre,@Cargo,@Telefono)	
-END
+    DELETE FROM Servicios WHERE ID_Servicio = @ServicioID;
+END;
 
---Funcion de ventas
-CREATE PROCEDURE sp_Consecionario_Ventas
-@id_Ventas int,
-@fecha DATE
-
+-- Eliminar un Empleado
+CREATE PROCEDURE sp_EliminarEmpleado
+    @EmpleadoID INT
 AS
 BEGIN
 
-	INSERT INTO Venta(ID_Venta,Fecha)
-	VALUES (@Id_Ventas,@Fecha)	
-END
+    DELETE FROM Empleados WHERE ID_Empleado = @EmpleadoID;
+END;
 
---Funcion de Servicios
-CREATE PROCEDURE sp_Consecionario_Servicios
-@id_Servicios int,
-@fecha DATE,
-@descripcion VARCHAR(50),
-@costo INT
-AS
-BEGIN
-
-	INSERT INTO Servicios(ID_Servicio,Fecha,Descripcion,Costo)
-	VALUES (@id_Servicios,@Fecha,@Descripcion,@Costo)	
-END

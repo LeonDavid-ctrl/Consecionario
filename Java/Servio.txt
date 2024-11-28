@@ -9,7 +9,6 @@ public class Servicios {
     List<String> nameServicio = new ArrayList<>();
     List<Integer> idServicio = new ArrayList<>();
     List<String> descServicio = new ArrayList<>();
-    List<Date> dateServicio = new ArrayList<>();
     List<Integer> priceServicio = new ArrayList<>();
     int ultimoId = 0;
     
@@ -24,7 +23,7 @@ public class Servicios {
         for (int i = 0; i < idServicio.size(); i++) {
             if(id == idServicio.get(i)){
                 System.out.println("Compra realizada");
-                return priceServicio.get(id);
+                return priceServicio.get(i);
             }
         }
         System.out.println("No se encontro el producto");
@@ -46,9 +45,10 @@ public class Servicios {
                 nameServicio.remove(i);
                 descServicio.remove(i);
                 priceServicio.remove(i);
+                return;
             }
-            else System.out.println("No se encontro el producto");
         }
+        System.out.println("No se encontro el producto");
     }
     
     public boolean VerificarServicio(){

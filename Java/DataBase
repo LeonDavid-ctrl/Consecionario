@@ -234,3 +234,58 @@ BEGIN
     DELETE FROM Empleados WHERE ID_Empleado = @EmpleadoID;
 END;
 
+CREATE PROCEDURE ObtenerClientePorID
+    @ID_Cliente INT
+AS
+BEGIN
+    SELECT * FROM Clientes
+    WHERE ID_Cliente = @ID_Cliente
+END;
+
+CREATE PROCEDURE ObtenerAutoPorID
+    @ID_Auto INT
+AS
+BEGIN
+    SELECT * FROM Autos
+    WHERE ID_Auto = @ID_Auto
+END;
+
+CREATE PROCEDURE ObtenerProductoPorID
+    @ID_Producto INT
+AS
+BEGIN
+    SELECT * FROM Productos
+    WHERE ID_Producto = @ID_Producto
+END;
+
+CREATE PROCEDURE ObtenerVentasID
+    @ID_Venta INT
+AS
+BEGIN
+    SELECT * FROM Ventas
+    WHERE ID_Venta = @ID_Venta
+END;
+
+CREATE PROCEDURE ObtenerVentasAutoID
+    @ID_VentaAuto INT
+AS
+BEGIN
+    SELECT * FROM VentaAutos
+    WHERE ID_VentaAuto = @ID_VentaAuto
+END;
+
+CREATE PROCEDURE ObtenerVentasServID
+    @ID_VentaServ INT
+AS
+BEGIN
+    SELECT * FROM VentaServicios
+    WHERE ID_VentaServicio = @ID_VentaServ
+END;
+
+CREATE PROCEDURE ObtenerVentasProductosID
+    @ID_VentaProducto INT
+AS
+BEGIN
+    SELECT * FROM VentaProductos
+    WHERE ID_VentaProducto = @ID_VentaProducto
+END;

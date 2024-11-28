@@ -6,15 +6,16 @@ public class ConsecionarioDojjs {
     
     String n,p;
     int s,id,op,w=0,pri;
-    admin admi;
-    Clientes clientes;
-    Productos producto;
-    Ventas venta;
-    Servicios serv;
+    admin admi = new admin();
+    Clientes clientes = new Clientes();
+    Productos producto = new Productos();
+    Ventas venta = new Ventas();
+    Servicios serv = new Servicios();
     Scanner in = new Scanner(System.in);
 
-    public void main(String[] args) {
-        Menu();
+    public static void main(String[] args) {
+        ConsecionarioDojjs app = new ConsecionarioDojjs();
+        app.Menu();
     }
     
     public void Menu(){
@@ -55,12 +56,14 @@ public class ConsecionarioDojjs {
     
     public int Ingreso(){
         w = 0;
-        if(admi.VerificarAdmin(n, p))
+        if (admi.VerificarAdmin(n, p)) {
             return 1;
-        else
-            if(clientes.VerificarCliente(n, p))
-                return 2;
-            else return 0;
+        } else if (clientes.VerificarCliente(n, p)) {
+            return 2;
+        } else {
+            System.out.println("Usuario o contraseña incorrectos.");
+            return 0;
+        }
     }
     
     public void OpUsuario(int o){
@@ -86,8 +89,7 @@ public class ConsecionarioDojjs {
                 pri = in.nextInt();
                 System.out.println("Ingrese la cantidad que va a agregar");
                 s = in.nextInt();
-                producto.AñadirProductos(n, pri);
-                producto.AñadirStock(id, s);
+                producto.AñadirProductos(n, pri,s);
             break;
             case 2: System.out.println("Ingrese el ID del producto que quiere quitar");
                 producto.MostrarProductos();

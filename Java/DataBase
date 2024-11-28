@@ -1,11 +1,15 @@
-USE Concesionario;
 
+-- Crear la base de datos
 CREATE DATABASE Concesionario;
+GO
+
+-- Usar la base de datos
 USE Concesionario;
+GO
 
 -- Tabla de Clientes
 CREATE TABLE Clientes (
-    ClienteID INT AUTO_INCREMENT PRIMARY KEY,
+    ID_Cliente INT IDENTITY(1,1) PRIMARY KEY,
     Nombre VARCHAR(100) NOT NULL,
     Telefono VARCHAR(15),
     Correo VARCHAR(100)
@@ -13,80 +17,73 @@ CREATE TABLE Clientes (
 
 -- Tabla de Autos
 CREATE TABLE Autos (
-    AutoID INT AUTO_INCREMENT PRIMARY KEY,
+    ID_Auto INT IDENTITY(1,1) PRIMARY KEY,
     Marca VARCHAR(50) NOT NULL,
     Modelo VARCHAR(50) NOT NULL,
     Año INT NOT NULL,
     Precio DECIMAL(10,2) NOT NULL
 );
 
--- Tabla de Productos para autos
+-- Tabla de Productos
 CREATE TABLE Productos (
-    ProductoID INT AUTO_INCREMENT PRIMARY KEY,
+    ID_Producto INT IDENTITY(1,1) PRIMARY KEY,
     Nombre VARCHAR(100) NOT NULL,
-    Descripcion VARCHAR(255),
-    Precio DECIMAL(10,2) NOT NULL,
-    Stock INT NOT NULL
-);
-
--- Tabla de Servicios
-CREATE TABLE Servicios (
-    ServicioID INT AUTO_INCREMENT PRIMARY KEY,
-    Nombre VARCHAR(100) NOT NULL,
-    Descripcion VARCHAR(255),
-    Costo DECIMAL(10,2) NOT NULL,
-    DuracionEstimada INT NOT NULL -- en minutos
+    Precio DECIMAL(10,2) NOT NULL
 );
 
 -- Tabla de Empleados
 CREATE TABLE Empleados (
-    EmpleadoID INT AUTO_INCREMENT PRIMARY KEY,
+    ID_Empleado INT IDENTITY(1,1) PRIMARY KEY,
     Nombre VARCHAR(100) NOT NULL,
     Cargo VARCHAR(50),
     Telefono VARCHAR(15)
 );
 
--- Tabla General de Ventas
+-- Tabla de Servicios
+CREATE TABLE Servicios (
+    ID_Servicio INT IDENTITY(1,1) PRIMARY KEY,
+    Descripcion VARCHAR(100) NOT NULL,
+    Costo DECIMAL(10,2) NOT NULL
+);
+
+-- Tabla de Ventas
 CREATE TABLE Ventas (
-    VentaID INT AUTO_INCREMENT PRIMARY KEY,
+    ID_Venta INT IDENTITY(1,1) PRIMARY KEY,
     Fecha DATE NOT NULL,
-    ClienteID INT NOT NULL,
-    EmpleadoID INT NOT NULL,
-    Total DECIMAL(10,2) NOT NULL,
-    FOREIGN KEY (ClienteID) REFERENCES Clientes(ClienteID) ON DELETE CASCADE,
-    FOREIGN KEY (EmpleadoID) REFERENCES Empleados(EmpleadoID) ON DELETE CASCADE
+    ID_Cliente INT NOT NULL,
+    ID_Empleado INT NOT NULL,
+    FOREIGN KEY (ID_Cliente) REFERENCES Clientes(ID_Cliente),
+    FOREIGN KEY (ID_Empleado) REFERENCES Empleados(ID_Empleado)
 );
 
--- Tabla de Detalles de Ventas de Autos
+-- Tabla de Detalles de Venta de Autos
 CREATE TABLE VentaAutos (
-    VentaAutoID INT AUTO_INCREMENT PRIMARY KEY,
-    VentaID INT NOT NULL,
-    AutoID INT NOT NULL,
-    PrecioVenta DECIMAL(10,2) NOT NULL,
-    FOREIGN KEY (VentaID) REFERENCES Ventas(VentaID) ON DELETE CASCADE,
-    FOREIGN KEY (AutoID) REFERENCES Autos(AutoID) ON DELETE CASCADE
+    ID_VentaAuto INT IDENTITY(1,1) PRIMARY KEY,
+    ID_Venta INT NOT NULL,
+    ID_Auto INT NOT NULL,
+    FOREIGN KEY (ID_Venta) REFERENCES Ventas(ID_Venta),
+    FOREIGN KEY (ID_Auto) REFERENCES Autos(ID_Auto)
 );
 
--- Tabla de Detalles de Ventas de Productos
+-- Tabla de Detalles de Venta de Productos
 CREATE TABLE VentaProductos (
-    VentaProductoID INT AUTO_INCREMENT PRIMARY KEY,
-    VentaID INT NOT NULL,
-    ProductoID INT NOT NULL,
+    ID_VentaProducto INT IDENTITY(1,1) PRIMARY KEY,
+    ID_Venta INT NOT NULL,
+    ID_Producto INT NOT NULL,
     Cantidad INT NOT NULL,
-    PrecioUnitario DECIMAL(10,2) NOT NULL,
-    FOREIGN KEY (VentaID) REFERENCES Ventas(VentaID) ON DELETE CASCADE,
-    FOREIGN KEY (ProductoID) REFERENCES Productos(ProductoID) ON DELETE CASCADE
+    FOREIGN KEY (ID_Venta) REFERENCES Ventas(ID_Venta),
+    FOREIGN KEY (ID_Producto) REFERENCES Productos(ID_Producto)
 );
 
--- Tabla de Detalles de Ventas de Servicios
+-- Tabla de Detalles de Venta de Servicios
 CREATE TABLE VentaServicios (
-    VentaServicioID INT AUTO_INCREMENT PRIMARY KEY,
-    VentaID INT NOT NULL,
-    ServicioID INT NOT NULL,
-    Costo DECIMAL(10,2) NOT NULL,
-    FOREIGN KEY (VentaID) REFERENCES Ventas(VentaID) ON DELETE CASCADE,
-    FOREIGN KEY (ServicioID) REFERENCES Servicios(ServicioID) ON DELETE CASCADE
+    ID_VentaServicio INT IDENTITY(1,1) PRIMARY KEY,
+    ID_Venta INT NOT NULL,
+    ID_Servicio INT NOT NULL,
+    FOREIGN KEY (ID_Venta) REFERENCES Ventas(ID_Venta),
+    FOREIGN KEY (ID_Servicio) REFERENCES Servicios(ID_Servicio)
 );
+
 
 --Funcion de clientes 
 -- Procedimiento para insertar Clientes

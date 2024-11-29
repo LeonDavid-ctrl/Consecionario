@@ -24,3 +24,128 @@ public class Clientes {
         passCliente.add(c);
     }
 }
+
+
+
+/*
+El código que se muestra pertenece a una clase llamada Clientes, que forma parte de una aplicación para gestionar clientes.
+La clase permite registrar a los clientes en el sistema y verificar si el acceso de un cliente es válido, es decir,
+si las credenciales que ingresa (nombre y contraseña) coinciden con las almacenadas en el sistema.
+
+
+
+1. Procedimiento para mejorar la seguridad de las contraseñas
+Pregunta: "El código actual almacena las contraseñas en texto plano. ¿Cómo mejorarías la seguridad de las contraseñas?"
+
+Respuesta esperada: Una mejora importante sería hashificar las contraseñas para no almacenarlas en texto claro, lo que protegería a los usuarios en caso de que la base de datos o las listas sean comprometidas. En lugar de guardar la contraseña directamente, guardamos su valor hash.
+
+Procedimiento: Puedes usar una biblioteca como MessageDigest en Java para generar un hash de la contraseña antes de almacenarla.
+
+Ejemplo de código:
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
+public String hashPassword(String password) throws NoSuchAlgorithmException {
+    MessageDigest md = MessageDigest.getInstance("SHA-256");
+    byte[] hashedBytes = md.digest(password.getBytes());
+    StringBuilder hexString = new StringBuilder();
+    for (byte b : hashedBytes) {
+        hexString.append(String.format("%02x", b));
+    }
+    return hexString.toString();
+}
+
+public void registrarCliente(String n, String c) {
+    try {
+        String hashedPassword = hashPassword(c); // Hasheamos la contraseña antes de almacenarla
+        nameCliente.add(n);
+        passCliente.add(hashedPassword);
+    } catch (NoSuchAlgorithmException e) {
+        e.printStackTrace();
+    }
+}
+
+public boolean VerificarCliente(String n, String c) {
+    try {
+        String hashedPassword = hashPassword(c); // Hasheamos la contraseña ingresada
+        for (int i = 0; i < nameCliente.size(); i++) {
+            if (n.equals(nameCliente.get(i)) && hashedPassword.equals(passCliente.get(i))) {
+                System.out.println("Acceso concedido");
+                return true;
+            }
+        }
+    } catch (NoSuchAlgorithmException e) {
+        e.printStackTrace();
+    }
+    System.out.println("El usuario no está registrado");
+    return false;
+}
+
+
+
+2. Procedimiento para manejar múltiples intentos fallidos (prevención de ataques de fuerza bruta)
+Pregunta: "¿Qué harías si un usuario intenta acceder múltiples veces con credenciales incorrectas? ¿Cómo manejarías los intentos fallidos para evitar ataques de fuerza bruta?"
+
+Respuesta esperada: Es una buena práctica proteger las cuentas contra ataques de fuerza bruta, donde un atacante intenta muchas contraseñas en poco tiempo. Una manera sencilla de manejar esto es limitar el número de intentos fallidos y bloquear temporalmente la cuenta después de varios intentos fallidos.
+
+Procedimiento: Crear un sistema para contar los intentos fallidos de inicio de sesión y bloquear temporalmente la cuenta si se alcanzan ciertos intentos erróneos.
+
+Ejemplo de código:
+
+
+private Map<String, Integer> intentosFallidos = new HashMap<>();
+
+public boolean VerificarCliente(String n, String c) {
+    if (intentosFallidos.getOrDefault(n, 0) >= 3) {
+        System.out.println("Cuenta bloqueada debido a intentos fallidos");
+        return false;
+    }
+    for (int i = 0; i < nameCliente.size(); i++) {
+        if (n.equals(nameCliente.get(i)) && c.equals(passCliente.get(i))) {
+            System.out.println("Acceso concedido");
+            intentosFallidos.put(n, 0); // Reseteamos los intentos fallidos al acceso correcto
+            return true;
+        }
+    }
+    intentosFallidos.put(n, intentosFallidos.getOrDefault(n, 0) + 1);
+    System.out.println("El usuario no está registrado");
+    return false;
+}
+
+
+3. Procedimiento para manejar la persistencia de datos (almacenamiento en disco)
+Pregunta: "El código actual guarda los datos en memoria, lo que significa que se perderán cuando se cierre el programa. ¿Cómo mejorarías esto para que los datos persistan después de cerrar el programa?"
+
+Respuesta esperada: Para persistir los datos, en lugar de almacenar los usuarios en listas en memoria, se pueden guardar en un archivo o una base de datos. Un enfoque simple sería usar archivos (por ejemplo, archivos de texto o archivos binarios) para guardar los datos de los clientes.
+
+Procedimiento: Usar clases de Java como FileWriter y BufferedReader para leer y escribir los datos en un archivo. También se puede usar un formato como JSON o CSV para estructurar los datos.
+
+Ejemplo de código (guardar en un archivo de texto):
+
+
+import java.io.*;
+
+public void guardarDatos() {
+    try (BufferedWriter writer = new BufferedWriter(new FileWriter("clientes.txt"))) {
+        for (int i = 0; i < nameCliente.size(); i++) {
+            writer.write(nameCliente.get(i) + "," + passCliente.get(i));
+            writer.newLine();
+        }
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}
+
+public void cargarDatos() {
+    try (BufferedReader reader = new BufferedReader(new FileReader("clientes.txt"))) {
+        String line;
+        while ((line = reader.readLine()) != null) {
+            String[] parts = line.split(",");
+            nameCliente.add(parts[0]);
+            passCliente.add(parts[1]);
+        }
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+} */
